@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: process-images-java-test-dpl
+  name: process-images-java-test
   namespace: apps
   labels:
     app: process-images-java-test
