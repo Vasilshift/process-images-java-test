@@ -35,7 +35,7 @@ spec:
           # Jenkins will replace this line with your real registry image
           image: registry.digitalocean.com/upload-grocery-data-app/process-images-java-test:latest
           ports:
-            - containerPort: 8086
+            - containerPort: 8080
           env:
             - name: SERVER_PORT
               value: "8086"
