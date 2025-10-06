@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-images-java-test-dpl
+  namespace: apps
+  labels:
+    app: process-images-java-test
+    app.kubernetes.io/name: process-images-java-test
+    app.kubernetes.io/part-of: tenderizz
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: process-images-java-test
+      app.kubernetes.io/name: process-images-java-test
+      app.kubernetes.io/part-of: tenderizz
+  template:
+    metadata:
+      labels:
+        app: process-images-java-test
+        app.kubernetes.io/name: process-images-java-test
+        app.kubernetes.io/part-of: tenderizz
+    spec:
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: docker-registry
+      containers:
+        - name: process-images-java
+          # Jenkins will replace this line with your real registry image
+          image: registry.digitalocean.com/upload-grocery-data-app/process-images-java-test:my-tag
+          ports:
+            - containerPort: 8086
+          env:
+            - name: SERVER_PORT
+              value: "8086"
+
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8086
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8086
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8086
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 12
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+      volumes:
+        - name: tmp
+          emptyDir: {}

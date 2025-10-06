@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: net-policy--java-test
+  namespace: apps
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: process-images-java-test
+      app.kubernetes.io/part-of: tenderizz
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: upload-grocery-data-app
+              app.kubernetes.io/part-of: tenderizz
+      ports:
+        - protocol: TCP
+          port: 8086

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: process-images-java-test
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: process-images-java-test
+    app.kubernetes.io/part-of: tenderizz
+spec:
+  selector:
+    app.kubernetes.io/name: process-images-java-test
+    app.kubernetes.io/part-of: tenderizz
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8086
+  type: ClusterIP
