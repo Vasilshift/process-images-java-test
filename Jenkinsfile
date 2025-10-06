@@ -92,29 +92,7 @@ pipeline {
       }
     }
 
-    stage("App secrets (DB + AWS S3)") {
-      steps {
-        sh '''
-          set -euxo pipefail
-          # Mask secrets while creating/updating
-          set +x
-          kubectl --kubeconfig="$KUBECONFIG" -n ${NAMESPACE} create secret generic pg-username \
-            --from-literal=pg-username="${DB_USERNAME}" \
-            --dry-run=client -o yaml | kubectl --kubeconfig="$KUBECONFIG" apply -f -
-          kubectl --kubeconfig="$KUBECONFIG" -n ${NAMESPACE} create secret generic pg-password \
-            --from-literal=pg-password="${DB_PASSWORD}" \
-            --dry-run=client -o yaml | kubectl --kubeconfig="$KUBECONFIG" apply -f -
 
-          kubectl --kubeconfig="$KUBECONFIG" -n ${NAMESPACE} create secret generic aws-s3-access-key \
-              --from-literal=aws-s3-access-key="$AWS_S3_ACCESS_KEY" \
-              --dry-run=client -o yaml | kubectl --kubeconfig="$KUBECONFIG" apply -f -
-
-          kubectl --kubeconfig="$KUBECONFIG" -n ${NAMESPACE} create secret generic aws-s3-secret-key \
-              --from-literal=aws-s3-secret-key="$AWS_S3_SECRET_KEY" \
-              --dry-run=client -o yaml | kubectl --kubeconfig="$KUBECONFIG" apply -f -
-        '''
-      }
-    }
 
     stage("Apply manifests & set image") {
       steps {
