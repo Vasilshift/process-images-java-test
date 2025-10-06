@@ -31,9 +31,9 @@ spec:
       imagePullSecrets:
         - name: docker-registry
       containers:
-        - name: process-images-java
+        - name: process-images-java-test
           # Jenkins will replace this line with your real registry image
-          image: registry.digitalocean.com/upload-grocery-data-app/process-images-java-test:my-tag
+          image: registry.digitalocean.com/upload-grocery-data-app/process-images-java-test:latest
           ports:
             - containerPort: 8086
           env:
