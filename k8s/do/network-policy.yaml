@@ -18,5 +18,5 @@ spec:
               app.kubernetes.io/part-of: tenderizz
       ports:
         - protocol: TCP
-          port: 80
+          port: 8080
 
