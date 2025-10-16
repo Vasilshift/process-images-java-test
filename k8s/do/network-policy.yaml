@@ -11,8 +11,18 @@ spec:
   policyTypes:
     - Ingress
   ingress:
+    # Разрешить трафик от ЛЮБОГО пода в Namespace 'apps'
+    # Это позволяет Ingress Controller'у или LoadBalancer'у достучаться до пода.
     - from:
-      - namespaceSelector: {} # Разрешить трафик от ВСЕХ Namespaces
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 8080
+
+    # Добавляем разрешение от внешних источников (нужно для LoadBalancer, если CNI требует)
+    # Это разрешает трафик от подов, которые не находятся в namespace 'apps'
+    - from:
+        - namespaceSelector: {}
       ports:
         - protocol: TCP
           port: 8080
