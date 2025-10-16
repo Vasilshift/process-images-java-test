@@ -35,10 +35,9 @@ spec:
           # Jenkins will replace this line with your real registry image
           image: registry.digitalocean.com/upload-grocery-data-app/process-images-java-test:latest
           ports:
-            - containerPort: 5009
-          env:
-            - name: SERVER_PORT
-              value: "8086"
+            - containerPort: 8086
+
+
 
           volumeMounts:
             - name: tmp
@@ -46,21 +45,21 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 5009
+              port: 8086
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 3
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 5009
+              port: 8086
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 3
           startupProbe:
             httpGet:
               path: /actuator/health
-              port: 5009
+              port: 8086
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 5
