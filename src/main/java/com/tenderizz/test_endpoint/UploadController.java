@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = {"https://tenderizz.com", "http://localhost:3000"})
 public class UploadController {
     @PostMapping("/process-all-images")
     public ResponseEntity<String> handleUpload(@RequestParam("file") MultipartFile file) {
