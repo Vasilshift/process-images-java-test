@@ -12,11 +12,7 @@ spec:
     - Ingress
   ingress:
     - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: process-images-java-test
-              app.kubernetes.io/part-of: tenderizz
+      - namespaceSelector: {} # Разрешить трафик от ВСЕХ Namespaces
       ports:
         - protocol: TCP
           port: 8080
-
